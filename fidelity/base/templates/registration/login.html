@@ -1,0 +1,48 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Tie Expo APP - Login{% endblock title %}
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-6">
+                <h1 class="mb-4 mt-4">Login</h1>
+                {% if form.errors %}
+                    <p>Seu usuário ou senha estão errados</p>
+                {% endif %}
+
+                {% if next %}
+                    {% if user.is_authenticated %}
+                        <p>Sua conta não tem acesso a essa página. Por favor faça login com outra conta</p>
+                    {% else %}
+                        <p>Faça login para acessar essa página</p>
+                    {% endif %}
+                {% endif %}
+                <form method="post" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="Next" value="{{ next }}">
+                    <div class="form-group">
+                        <label for="{{ form.username.id_for_label }}">{{ form.username.label_tag }}</label>
+                        <input type="email" name="{{ form.username.html_name }}" class="form-control"
+                               id="{{ form.username.id_for_label }}"
+                               aria-describedby="emailHelp" maxlength="{{ form.username.max_length }}"
+                               required="required" autofocus="">
+                        <small id="emailHelp" class="form-text text-muted">Nunca compartilharemos o seu email com
+                            ninguém.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ form.password.id_for_label }}">{{ form.password.label_tag }}</label>
+                        <input type="password" name="{{ form.password.html_name }}" class="form-control"
+                               value="{{ field.value }}" autofocus="" maxlength="{{ form.password.max_length }}"
+                               required="required" id="{{ form.password.id_for_label }}">
+                    </div>
+                    <button type="submit" value="'login" class="btn btn-primary">
+
+                        Entrar
+                    </button>
+                </form>
+                <p class="mt-4"><a href="{% url 'password_reset' %}">Esqueceu a senha?</a></p>
+            </div>
+        </div>
+    </div>
+{% endblock body %}
